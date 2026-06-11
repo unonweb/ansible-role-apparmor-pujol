@@ -1,0 +1,16 @@
+---
+dependencies:
+- role: apparmor
+  vars:
+    apparmor_install_apt_state: present
+          
+argument_specs:
+  main:
+    options:
+      apparmor_pujol_install_apt_state:
+        required: true
+        type: str
+        choices:
+        - present
+        - absent
+        - latest

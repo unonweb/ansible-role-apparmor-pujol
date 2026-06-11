@@ -1,0 +1,17 @@
+---
+# apt_state == "absent"
+- when: apparmor_pujol_install_apt_state == "absent" 
+  name: Apt install apparmor.d
+  become: true
+  ansible.builtin.apt:
+    state: absent
+    name: apparmor.d
+    purge: true
+
+# apt_state == "present"
+- when: apparmor_pujol_install_apt_state == "present"
+  name: Apt remove apparmor.d
+  become: true
+  ansible.builtin.apt:
+    state: present
+    name: apparmor.d

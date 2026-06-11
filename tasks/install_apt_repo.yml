@@ -1,0 +1,50 @@
+---
+# apt_repo_state == "present"
+- when: apparmor_pujol_install_apt_repo_state == "present"
+  block:
+
+  # mkdir
+  - name: Mkdir {{ apparmor_install_apt_key_dir }}
+    become: true
+    ansible.builtin.file:
+      path: "{{ apparmor_install_apt_key_dir }}"
+      state: directory
+      mode: 0755
+
+  # download key
+  - name: Download GPG key to {{ apparmor_install_apt_key_dir }}/roddhjav.gpg
+    become: true
+    ansible.builtin.get_url:
+      url: "{{ apparmor_pujol_install_apt_repo_key }}"
+      dest: "{{ apparmor_install_apt_key_dir }}/roddhjav.gpg"
+      mode: 0644
+
+  # add repo
+  - name: Add roddhjav repo
+    become: true
+    ansible.builtin.deb822_repository:
+      name: roddhjav
+      architectures: amd64
+      types: deb
+      uris: "{{ apparmor_pujol_install_apt_repo_url }}"
+      suites: "{{ apparmor_pujol_install_apt_repo_suites }}"
+      components: main
+      enabled: true
+      signed_by: "{{ apparmor_install_apt_key_dir }}/roddhjav.gpg"
+    register: __apparmor_pujol_add_repo
+
+  # update apt cache
+  - when: __apparmor_pujol_add_repo.changed
+    become: true
+    ansible.builtin.apt:
+      update_cache: true
+
+# apt_repo_state == "absent"
+- when: apparmor_pujol_install_apt_repo_state == "absent"
+  become: true
+  loop:
+  - "{{ apparmor_install_apt_key_dir }}/roddhjav.gpg"
+  - /etc/apt/sources.list.d/roddhjav.sources
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent

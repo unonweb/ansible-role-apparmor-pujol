@@ -1,0 +1,39 @@
+---
+- name: apparmor_pujol
+  tags:
+    - apparmor_pujol
+  block:
+
+  # apt
+  - ansible.builtin.import_role: install_apt_repo.yml
+  - ansible.builtin.import_role: install_apt_pkg.yml
+      
+  # config
+  - when: apparmor_pujol_install_apt_state != "absent"
+    block:
+
+    # copy parser config
+    - when: apparmor_pujol_config_parser_src != None
+      name: Copy {{ apparmor_pujol_config_parser_src }} -> {{ apparmor_pujol_config_parser_dst }}
+      ansible.builtin.copy:
+        src: "{{ apparmor_pujol_config_parser_src }}"
+        dest: "{{ apparmor_pujol_config_parser_dst }}"
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+    
+    # mkdir
+    - name: Mkdir /etc/apparmor.d/tunables/xdg-user-dirs.d/apparmor.d.d
+      become: true
+      ansible.builtin.file:
+        path: /etc/apparmor.d/tunables/xdg-user-dirs.d/apparmor.d.d
+        state: directory
+        mode: u=rw,g=r,o=r
+    
+    # template
+    - name: Template tunables.xdg-user-dirs.site.local.j2
+      become: true
+      ansible.builtin.template:
+        src: tunables.xdg-user-dirs.site.local.j2
+        dest: /etc/apparmor.d/tunables/xdg-user-dirs.d/apparmor.d.d/site.local
+        mode: u=rw,g=r,o=r

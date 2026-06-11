@@ -1,0 +1,30 @@
+# The following may be used to add additional entries such as for
+# translations. See tunables/xdg-user-dirs for details. 
+# Example:
+# @{XDG_MUSIC_DIR}+="Musique"
+# XDG_*_DIR variables are relative pathnames from the user home directory. 
+
+{% if apparmor_pujol_config_xdg_desktop_dir %}
+@{XDG_DESKTOP_DIR}+="{{ apparmor_pujol_config_xdg_desktop_dir | regex_replace('^(\$\{HOME\}|\$HOME)/', '') }}"
+{% endif %}
+{% if apparmor_pujol_config_xdg_download_dir %}
+@{XDG_DOWNLOAD_DIR}+="{{ apparmor_pujol_config_xdg_download_dir | regex_replace('^(\$\{HOME\}|\$HOME)/', '') }}"
+{% endif %}
+{% if apparmor_pujol_config_xdg_templates_dir %}
+@{XDG_TEMPLATES_DIR}+="{{ apparmor_pujol_config_xdg_templates_dir | regex_replace('^(\$\{HOME\}|\$HOME)/', '') }}"
+{% endif %}
+{% if apparmor_pujol_config_xdg_publicshare_dir %}
+@{XDG_PUBLICSHARE_DIR}+="{{ apparmor_pujol_config_xdg_publicshare_dir | regex_replace('^(\$\{HOME\}|\$HOME)/', '') }}"
+{% endif %}
+{% if apparmor_pujol_config_xdg_documents_dir %}
+@{XDG_DOCUMENTS_DIR}+="{{ apparmor_pujol_config_xdg_documents_dir | regex_replace('^(\$\{HOME\}|\$HOME)/', '') }}"
+{% endif %}
+{% if apparmor_pujol_config_xdg_music_dir %}
+@{XDG_MUSIC_DIR}+="{{ apparmor_pujol_config_xdg_music_dir | regex_replace('^(\$\{HOME\}|\$HOME)/', '') }}"
+{% endif %}
+{% if apparmor_pujol_config_xdg_pictures_dir %}
+@{XDG_PICTURES_DIR}+="{{ apparmor_pujol_config_xdg_pictures_dir | regex_replace('^(\$\{HOME\}|\$HOME)/', '') }}"
+{% endif %}
+{% if apparmor_pujol_config_xdg_videos_dir %}
+@{XDG_VIDEOS_DIR}+="{{ apparmor_pujol_config_xdg_videos_dir | regex_replace('^(\$\{HOME\}|\$HOME)/', '') }}"
+{% endif %}
