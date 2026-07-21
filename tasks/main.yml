@@ -5,8 +5,10 @@
   block:
 
   # apt
-  - ansible.builtin.import_role: install_apt_repo.yml
-  - ansible.builtin.import_role: install_apt_pkg.yml
+  - ansible.builtin.import_role: 
+      name: install_apt_repo.yml
+  - ansible.builtin.import_role: 
+      name: install_apt_pkg.yml
       
   # config
   - when: apparmor_pujol_install_apt_state != "absent"
